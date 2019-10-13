@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+
+import 'entity.dart';
 
 class RandomWordsState extends State<RandomWords> {
   final List<WordPair> _suggestions = <WordPair>[];
@@ -18,7 +21,7 @@ class RandomWordsState extends State<RandomWords> {
         ],
       ),
 
-      body: _buildSuggestions(),
+      body: _buildSuggestions(context),
     ); // ... to here.
   }
 
@@ -53,63 +56,34 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
 
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16),
-        // The itemBuilder callback is called once per suggested
-        // word pairing, and places each suggestion into a ListTile
-        // row. For even rows, the function adds a ListTile row for
-        // the word pairing. For odd rows, the function adds a
-        // Divider widget to visually separate the entries. Note that
-        // the divider may be difficult to see on smaller devices.
-        itemBuilder: (BuildContext _context, int i) {
-          // Add a one-pixel-high divider widget before each row
-          // in the ListView.
-          if (i.isOdd) {
-            return Divider();
-          }
+  Widget _buildSuggestions(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('words').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
 
-          // The syntax "i ~/ 2" divides i by 2 and returns an
-          // integer result.
-          // For example: 1, 2, 3, 4, 5 becomes 0, 1, 1, 2, 2.
-          // This calculates the actual number of word pairings
-          // in the ListView,minus the divider widgets.
-          final int index = i ~/ 2;
-          // If you've reached the end of the available word
-          // pairings...
-          if (index >= _suggestions.length) {
-            // ...then generate 10 more and add them to the
-            // suggestions list.
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final bool alreadySaved = _saved.contains(pair); // Add this line.
-
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: Icon(
-        // Add the lines from here...
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
-      ), // ... to here.
-      onTap: () {
-        // Add 9 lines from here...
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
+        return ListView(
+          padding: EdgeInsets.all(16),
+          children: snapshot.data.documents
+              .map((data) => _buildRow(context, data))
+              .toList(),
+        );
       },
     );
+  }
+
+  Widget _buildRow(BuildContext context, DocumentSnapshot data) {
+    final pair = Entity.fromSnapshot(data);
+    return ListTile(
+        title: Text(
+          pair.wordpair,
+        ),
+        trailing: Icon(
+          pair.isFavorite ? Icons.favorite : Icons.favorite_border,
+          color: pair.isFavorite ? Colors.red : null,
+        ),
+        onTap: () =>
+            pair.reference.updateData({'isFavorite': !pair.isFavorite}));
   }
 }
 

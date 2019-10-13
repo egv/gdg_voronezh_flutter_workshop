@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1036953194568-br3k0n1okq8gkv7n7ve2l5jc9fe3bc6h.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1036953194568-br3k0n1okq8gkv7n7ve2l5jc9fe3bc6h</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCggy8MhSRLaEf5WXyTi6uDuNMVUMq_gCQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1036953194568</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.awesomeApp</string>
+	<key>PROJECT_ID</key>
+	<string>gdg-workshop-5ccc9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gdg-workshop-5ccc9.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1036953194568:ios:088989917db8c59b42087d</string>
+	<key>DATABASE_URL</key>
+	<string>https://gdg-workshop-5ccc9.firebaseio.com</string>
+</dict>
+</plist>
